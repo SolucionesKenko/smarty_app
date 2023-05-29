@@ -60,7 +60,7 @@ class _DataPageState extends State<DataPage> {
         items: <BottomNavigationBarItem>[
       //Home Button
          BottomNavigationBarItem(
-          label: 'Home',
+          label: 'Inicio',
           icon: Icon(
             Icons.home,
             color: currentIndex == 0 ? Colors.blueGrey : Colors.black
@@ -68,7 +68,7 @@ class _DataPageState extends State<DataPage> {
          ),
       //History Button
           BottomNavigationBarItem(
-          label: 'History',
+          label: 'Historial',
           icon: Icon(
             Icons.history,
             color: currentIndex == 1 ? Colors.blueGrey : Colors.black
@@ -84,7 +84,7 @@ class _DataPageState extends State<DataPage> {
           ), 
         // Settings Button
         BottomNavigationBarItem(
-          label: 'Configuraci¨®n',
+          label: ("Configuraci\u00F3n"),
           icon: Icon(
             Icons.settings,
             color: currentIndex == 3 ? Colors.blueGrey : Colors.black
@@ -92,7 +92,7 @@ class _DataPageState extends State<DataPage> {
           ),  
        ],
       selectedItemColor: Colors.blueGrey,
-      ), 
+      ),
     );
   }
 }
