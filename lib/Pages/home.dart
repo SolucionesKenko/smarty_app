@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smarty_app/bluetooth.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,6 +21,19 @@ class _HomeState extends State<Home> {
             width:
                 130), //const Text('Kabsim App', style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.bluetooth,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => const FlutterBlueApp(),
+              ));
+            },
+          ),
+        ],
       ),
       body: const Center(
         child: LabelsTem(),
@@ -55,8 +69,15 @@ class _LabelsTemState extends State<LabelsTem> {
                 //Container 1
                 Container(
                   height: 75,
-                  width: 100,
                   color: null,
+                  child: Align(
+                    child: ElevatedButton(onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => const FlutterBlueApp(),
+              ));
+                    },
+                    child: const Text('Conectar Bluetooth') )
+                  ),
                 ),
                 //Container 2
                 Container(

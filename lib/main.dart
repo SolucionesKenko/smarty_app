@@ -11,13 +11,8 @@ void main() {
 
 
 // Inicializaci¨®n de la APP
-class MySmartApp extends StatefulWidget {
-  const MySmartApp({super.key});
-  @override
-  State<MySmartApp> createState() => _MySmartAppState();
-}
-
-class _MySmartAppState extends State<MySmartApp> {
+class MySmartApp extends StatelessWidget {
+  const MySmartApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -73,7 +68,7 @@ class _DataPageState extends State<DataPage> {
             Icons.history,
             color: currentIndex == 1 ? Colors.blueGrey : Colors.black
           ),
-          ),
+        ),
         //Account Button
           BottomNavigationBarItem(
           label: 'Perfil',
