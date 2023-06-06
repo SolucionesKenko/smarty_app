@@ -9,7 +9,6 @@ void main() {
   runApp(const MySmartApp());
 }
 
-
 // Inicializaci¨®n de la APP
 class MySmartApp extends StatelessWidget {
   const MySmartApp({Key? key}) : super(key: key);
