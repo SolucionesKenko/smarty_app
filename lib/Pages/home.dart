@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smarty_app/bluetooth.dart';
+import 'package:smarty_app/main.dart';
+import 'package:provider/provider.dart';
+import 'package:smarty_app/temp_provider.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -29,7 +33,7 @@ class _HomeState extends State<Home> {
             ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const FlutterBlueApp(),
+                builder: (BuildContext context) => const MySmartApp(),
               ));
             },
           ),
@@ -70,21 +74,13 @@ class _LabelsTemState extends State<LabelsTem> {
                 Container(
                   height: 75,
                   color: null,
-                  child: Align(
-                    child: ElevatedButton(onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const FlutterBlueApp(),
-              ));
-                    },
-                    child: const Text('Conectar Bluetooth') )
-                  ),
                 ),
                 //Container 2
                 Container(
                   height: 45,
                   width: 140,
                   color: null,
-                  child: const Row(
+                  child: Row(
                     children: [
                       SizedBox(
                         width: 115,
@@ -92,12 +88,14 @@ class _LabelsTemState extends State<LabelsTem> {
                           children: [
                             Align(
                               alignment: Alignment.center,
-                              child: Text("S1"),
+                              child: Consumer<TempProvider>(
+                                  builder: (context, temp, _) =>
+                                      Text(temp.temp)),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 25,
                         child: Row(
                           children: [

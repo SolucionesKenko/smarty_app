@@ -2,35 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';// Quitar 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'main.dart';
 import 'widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:smarty_app/temp_provider.dart';
-
-class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => TempProvider(),
-      child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      color: Colors.lightBlue,
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBluePlus.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state == BluetoothState.on) {
-              return const FindDevicesScreen();
-            }
-            return BluetoothOffScreen(state: state);
-          }),
-    ),
-   );
-  }
-}
+import 'main.dart';
 
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
@@ -58,10 +33,10 @@ class BluetoothOffScreen extends StatelessWidget {
                   ?.copyWith(color: Colors.white),
             ),
             ElevatedButton(
-              child: const Text('TURN ON'),
               onPressed: Platform.isAndroid
                   ? () => FlutterBluePlus.instance.turnOn()
                   : null,
+              child: const Text('TURN ON'),
             ),
           ],
         ),
@@ -77,12 +52,9 @@ class FindDevicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Consumer<TempProvider>(
-            builder: (context, temp, _) => Text(temp.temp)),
         title: const Text('Find Devices'),
         actions: [
           ElevatedButton(
-            child: const Text('TURN OFF'),
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
 	      backgroundColor: Colors.black,
@@ -90,6 +62,7 @@ class FindDevicesScreen extends StatelessWidget {
             onPressed: Platform.isAndroid
                 ? () => FlutterBluePlus.instance.turnOff()
                 : null,
+            child: const Text('TURN OFF'),
           ),
         ],
       ),
@@ -157,9 +130,9 @@ class FindDevicesScreen extends StatelessWidget {
         builder: (c, snapshot) {
           if (snapshot.data!) {
             return FloatingActionButton(
-              child: const Icon(Icons.stop),
               onPressed: () => FlutterBluePlus.instance.stopScan(),
               backgroundColor: Colors.red,
+              child: const Icon(Icons.stop),
             );
           } else {
             return FloatingActionButton(
@@ -307,7 +280,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   foregroundColor: Colors.white),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const MySmartApp(),
+                  builder: (BuildContext context) => const DataPage(),
                 ));
               },
               child: const Text('Home'),

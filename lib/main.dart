@@ -1,10 +1,14 @@
 //Test de kabanta UX
 
 import 'package:flutter/material.dart';
+import 'package:smarty_app/bluetooth.dart';
+import 'package:smarty_app/temp_provider.dart';
 import 'Pages/history.dart';
 import 'Pages/home.dart';
 import 'Pages/perfil.dart';
 import 'Pages/settings.dart';
+import 'package:provider/provider.dart';
+
 void main() {
   runApp(const MySmartApp());
 }
@@ -14,9 +18,13 @@ class MySmartApp extends StatelessWidget {
   const MySmartApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: DataPage(),
-        );
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => TempProvider(),
+      child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: FindDevicesScreen(),
+          ),
+    );
   }
 }
 
