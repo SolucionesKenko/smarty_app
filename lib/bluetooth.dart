@@ -5,7 +5,6 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:smarty_app/temp_provider.dart';
-import 'main.dart';
 
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
@@ -199,7 +198,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   ),
                   title: Text(
                       'Device is ${snapshot.data.toString().split('.')[1]}.'),
-                  subtitle: Text('${widget.device.id}'),
+                  //subtitle: Text('${widget.device.id}'),
                   trailing: SizedBox(
                     width: 30,
                     child: StreamBuilder<bool>(
@@ -221,17 +220,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
               );
             },
           ),
-          /*ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(220, 222, 18, 164),
-                foregroundColor: Colors.white),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const DataPage(),
-              ));
-            },
-            child: const Text('Home'),
-          ),*/
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smarty_app/bluetooth.dart';
-import 'package:smarty_app/main.dart';
 import 'package:provider/provider.dart';
 import 'package:smarty_app/temp_provider.dart';
+import 'package:smarty_app/hum_provider.dart';
 
 
 class Home extends StatefulWidget {
@@ -94,13 +94,15 @@ class _LabelsTemState extends State<LabelsTem> {
                           ],
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 25,
                         child: Row(
                           children: [
                             Align(
                               alignment: Alignment.center,
-                              child: Text("S2"),
+                              child: Consumer<HumProvider>(
+                                  builder: (context, hum, _) =>
+                                      Text(hum.hum)),
                             ),
                           ],
                         ),

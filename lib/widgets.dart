@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'temp_provider.dart';
+import 'hum_provider.dart';
 import 'main.dart';
+
 
 final Map<String, String> characteristicNames = {
   'beb5483e-36e1-4688-b7f5-ea07361b26a8': 'Temperature',
@@ -151,14 +153,7 @@ class ServiceTile extends StatelessWidget {
           children: <Widget>[
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              /*children: <Widget>[
-                Text('Variables'),
-                //Text(
-                //    '0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
-                //    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                //        color: Theme.of(context).textTheme.caption?.color))
-              ],*/
+              crossAxisAlignment: CrossAxisAlignment.center,
             ),
             ...characteristicTiles,
           ],
@@ -189,102 +184,49 @@ class CharacteristicTile extends StatefulWidget {
 }
 
 class _CharacteristicTileState extends State<CharacteristicTile> {
-  double currentSliderValue = 0;
-  String currentSetValue = '';
+  List<List<int>> allCharacteristicValues = [];
   @override
   Widget build(BuildContext context) {
     final providerTemp = Provider.of<TempProvider>(context);
-    return StreamBuilder<List<int>>(
-      stream: widget.characteristic.value,
-      initialData: widget.characteristic.lastValue,
-      builder: (c, snapshot) {
-        final value = snapshot.data;
-        String asciiString = value != null ? String.fromCharCodes(value) : '';
-        return ListTile(
-          title: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            /*children: <Widget>[
-              Text(
-                characteristicNames[
-                        widget.characteristic.uuid.toString().toLowerCase()] ??
-                    widget.characteristic.uuid.toString().toUpperCase(),
-              ),
-              //Text(asciiString),
-              //const Text('Characteristic'),
-              //Text(
-              //    '0x${widget.characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
-              //    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-              //        color: Theme.of(context).textTheme.caption?.color))
-            ],*/
-          ),
-          contentPadding: const EdgeInsets.all(0.0),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(220, 222, 18, 164),
-                foregroundColor: Colors.white),
-            onPressed: () async {
-                  final currentContext =
-                      context; // Almacenar el BuildContext en una variable
+    final providerHum = Provider.of<HumProvider>(context);
+    return Column(children: <Widget>[
+      StreamBuilder<List<int>>(
+        stream: widget.characteristic.value,
+        initialData: widget.characteristic.lastValue,
+        builder: (c, snapshot) {
+          final value = snapshot.data;
+          String asciiString = value != null ? String.fromCharCodes(value) : '';
+          return const ListTile(
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          );
+        },
+      ),
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(220, 222, 18, 164),
+          foregroundColor: Colors.white,
+        ),
+        onPressed: () async {
+          final currentContext = context;
 
-                  widget.characteristic.read();
-                  List<int> readValues =
-                  await widget.characteristic.value.first;
-                  providerTemp.temp = String.fromCharCodes(readValues);
-
-                  Navigator.of(currentContext).push(MaterialPageRoute(
-                    builder: (BuildContext context) => const DataPage(),
-                  ));
-                },
-            child: const Text('Regresar al Inicio'),
-          ),
-              /*IconButton(
-                icon: Icon(
-                  Icons.remove_red_eye,
-                  color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
-                ),
-                onPressed: () async {
-                  final currentContext =
-                      context; // Almacenar el BuildContext en una variable
-
-                  widget.characteristic.read();
-                  List<int> readValues =
-                      await widget.characteristic.value.first;
-                  providerTemp.temp = String.fromCharCodes(readValues);
-
-                  Navigator.of(currentContext).push(MaterialPageRoute(
-                    builder: (BuildContext context) => const DataPage(),
-                  ));
-                },
-              ),*/
-              /*
-              IconButton(
-                icon: Icon(Icons.edit,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
-                //onPressed: widget.onWritePressed!([currentSliderValue.toInt()]),
-                onPressed: () {
-                  final List<int> result = [currentSliderValue.toInt()];
-                  widget.onWritePressed?.call(result);
-                },
-              ),*/
-              /*IconButton(
-                  icon: Icon(
-                      widget.characteristic.isNotifying
-                          ? Icons.sync_disabled
-                          : Icons.sync,
-                      color:
-                          Theme.of(context).iconTheme.color?.withOpacity(0.5)),
-                  onPressed: () {
-                    widget.onNotificationPressed;
-                  })*/
-            ],
-          ),
-        );
-      },
-    );
+          widget.characteristic.read();
+          List<int> readValues = await widget.characteristic.value.first;
+          allCharacteristicValues.add(readValues);
+          providerTemp.temp = String.fromCharCodes(readValues);
+          providerHum.hum = String.fromCharCodes(readValues);
+          Navigator.of(currentContext).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  DataPage(data: allCharacteristicValues),
+            ),
+          );
+        },
+        child: const Text('Enviar datos'),
+      ),
+    ]);
   }
 }
 
@@ -310,3 +252,4 @@ class AdapterStateTile extends StatelessWidget {
     );
   }
 }
+

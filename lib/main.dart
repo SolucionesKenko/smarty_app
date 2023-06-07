@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as FlutterBlue;
-import 'package:flutter_blue_plus/gen/flutterblueplus.pb.dart' ;
 import 'package:smarty_app/bluetooth.dart';
 import 'package:smarty_app/temp_provider.dart';
+import 'package:smarty_app/hum_provider.dart';
 import 'Pages/history.dart';
 import 'Pages/home.dart';
 import 'Pages/perfil.dart';
@@ -16,25 +16,35 @@ void main() {
 }
 
 // Inicializaci¨®n de la APP
-class MySmartApp extends StatelessWidget {
+class MySmartApp extends StatefulWidget {
   const MySmartApp({Key? key}) : super(key: key);
+
+  @override
+  _MySmartAppState createState() => _MySmartAppState();
+}
+
+class _MySmartAppState extends State<MySmartApp> {
+  List<List<int>> allCharacteristicValues = []; // Define la lista aqu¨ª
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => TempProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder<FlutterBlue.BluetoothState>(
-          stream: FlutterBlue.FlutterBluePlus.instance.state,
-          initialData: FlutterBlue.BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state == FlutterBlue.BluetoothState.on) {
-              return const DataPage();
-            }
-            return BluetoothOffScreen(state: state);
-          },
+      create: (BuildContext context) => HumProvider(),
+      child: ChangeNotifierProvider(
+        create: (BuildContext context) => TempProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: StreamBuilder<FlutterBlue.BluetoothState>(
+            stream: FlutterBlue.FlutterBluePlus.instance.state,
+            initialData: FlutterBlue.BluetoothState.unknown,
+            builder: (c, snapshot) {
+              final state = snapshot.data;
+              if (state == FlutterBlue.BluetoothState.on) {
+                return DataPage(data: allCharacteristicValues); // Pasa los datos aqu¨ª
+              }
+              return BluetoothOffScreen(state: state);
+            },
+          ),
         ),
       ),
     );
@@ -44,16 +54,18 @@ class MySmartApp extends StatelessWidget {
 //Data main screen
 
 class DataPage extends StatefulWidget {
-  const DataPage({super.key});
+  final List<List<int>> data;
+
+  const DataPage({Key? key, required this.data}) : super(key: key);
+
   @override
   State<DataPage> createState() => _DataPageState();
 }
 
 class _DataPageState extends State<DataPage> {
+  int currentIndex = 0;
 
-  int currentIndex= 0;
-
-  final List<Widget> _widgetOptions = <Widget> [
+  final List<Widget> _widgetOptions = <Widget>[
     const Home(),
     const History(),
     const Perfil(),
@@ -73,41 +85,34 @@ class _DataPageState extends State<DataPage> {
         },
         currentIndex: currentIndex,
         items: <BottomNavigationBarItem>[
-      //Home Button
-         BottomNavigationBarItem(
-          label: 'Inicio',
-          icon: Icon(
-            Icons.home,
-            color: currentIndex == 0 ? Colors.blueGrey : Colors.black
-          ),
-         ),
-      //History Button
+          //Home Button
           BottomNavigationBarItem(
-          label: 'Historial',
-          icon: Icon(
-            Icons.history,
-            color: currentIndex == 1 ? Colors.blueGrey : Colors.black
+            label: 'Inicio',
+            icon: Icon(Icons.home,
+                color: currentIndex == 0 ? Colors.blueGrey : Colors.black),
           ),
-        ),
-        //Account Button
+          //History Button
           BottomNavigationBarItem(
-          label: 'Perfil',
-          icon: Icon(
-            Icons.person,
-            color: currentIndex == 2 ? Colors.blueGrey : Colors.black
+            label: 'Historial',
+            icon: Icon(Icons.history,
+                color: currentIndex == 1 ? Colors.blueGrey : Colors.black),
           ),
-          ), 
-        // Settings Button
-        BottomNavigationBarItem(
-          label: ("Configuraci\u00F3n"),
-          icon: Icon(
-            Icons.settings,
-            color: currentIndex == 3 ? Colors.blueGrey : Colors.black
+          //Account Button
+          BottomNavigationBarItem(
+            label: 'Perfil',
+            icon: Icon(Icons.person,
+                color: currentIndex == 2 ? Colors.blueGrey : Colors.black),
           ),
-          ),  
-       ],
-      selectedItemColor: Colors.blueGrey,
+          // Settings Button
+          BottomNavigationBarItem(
+            label: ("Configuraci\u00F3n"),
+            icon: Icon(Icons.settings,
+                color: currentIndex == 3 ? Colors.blueGrey : Colors.black),
+          ),
+        ],
+        selectedItemColor: Colors.blueGrey,
       ),
     );
   }
 }
+
