@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'temp_provider.dart';
+import 'main.dart';
 
 final Map<String, String> characteristicNames = {
   'beb5483e-36e1-4688-b7f5-ea07361b26a8': 'Temperature',
   '8bdf0a1a-a48e-4dc3-8bab-ad0c1f7ed218': 'Humidity',
-  '4fafc201-1fb5-459e-8fcc-c5c9c331914b': 'Mes',
   // Add more characteristic UUIDs here
 };
 
@@ -152,13 +152,13 @@ class ServiceTile extends StatelessWidget {
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              /*children: <Widget>[
                 Text('Variables'),
                 //Text(
                 //    '0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
                 //    style: Theme.of(context).textTheme.bodyText1?.copyWith(
                 //        color: Theme.of(context).textTheme.caption?.color))
-              ],
+              ],*/
             ),
             ...characteristicTiles,
           ],
@@ -201,52 +201,66 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         final value = snapshot.data;
         String asciiString = value != null ? String.fromCharCodes(value) : '';
         return ListTile(
-          title: Column(
+          title: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            /*children: <Widget>[
               Text(
                 characteristicNames[
                         widget.characteristic.uuid.toString().toLowerCase()] ??
                     widget.characteristic.uuid.toString().toUpperCase(),
               ),
-              Slider(
-                value: currentSliderValue,
-                max: 100,
-                divisions: 10,
-                label: currentSliderValue.round().toString(),
-                activeColor: Colors.blueGrey,
-                inactiveColor: Colors.blueGrey.shade200,
-                onChanged: (double value) {
-                  setState(() {
-                    currentSliderValue = value;
-                    currentSetValue = '${currentSliderValue.round()}';
-                  });
-                },
-              ),
-              Text(asciiString),
+              //Text(asciiString),
               //const Text('Characteristic'),
               //Text(
               //    '0x${widget.characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
               //    style: Theme.of(context).textTheme.bodyText1?.copyWith(
               //        color: Theme.of(context).textTheme.caption?.color))
-            ],
+            ],*/
           ),
           contentPadding: const EdgeInsets.all(0.0),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              IconButton(
-                  icon: Icon(
-                    Icons.remove_red_eye,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
-                  ),
-                  onPressed: () async {
-                    widget.characteristic.read();
-                    List<int> readValues =
-                        await widget.characteristic.value.first;
-                    providerTemp.temp = String.fromCharCodes(readValues);
-                  }),
+              ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(220, 222, 18, 164),
+                foregroundColor: Colors.white),
+            onPressed: () async {
+                  final currentContext =
+                      context; // Almacenar el BuildContext en una variable
+
+                  widget.characteristic.read();
+                  List<int> readValues =
+                  await widget.characteristic.value.first;
+                  providerTemp.temp = String.fromCharCodes(readValues);
+
+                  Navigator.of(currentContext).push(MaterialPageRoute(
+                    builder: (BuildContext context) => const DataPage(),
+                  ));
+                },
+            child: const Text('Regresar al Inicio'),
+          ),
+              /*IconButton(
+                icon: Icon(
+                  Icons.remove_red_eye,
+                  color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
+                ),
+                onPressed: () async {
+                  final currentContext =
+                      context; // Almacenar el BuildContext en una variable
+
+                  widget.characteristic.read();
+                  List<int> readValues =
+                      await widget.characteristic.value.first;
+                  providerTemp.temp = String.fromCharCodes(readValues);
+
+                  Navigator.of(currentContext).push(MaterialPageRoute(
+                    builder: (BuildContext context) => const DataPage(),
+                  ));
+                },
+              ),*/
+              /*
               IconButton(
                 icon: Icon(Icons.edit,
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
@@ -255,8 +269,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
                   final List<int> result = [currentSliderValue.toInt()];
                   widget.onWritePressed?.call(result);
                 },
-              ),
-              IconButton(
+              ),*/
+              /*IconButton(
                   icon: Icon(
                       widget.characteristic.isNotifying
                           ? Icons.sync_disabled
@@ -265,7 +279,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
                           Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                   onPressed: () {
                     widget.onNotificationPressed;
-                  })
+                  })*/
             ],
           ),
         );

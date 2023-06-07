@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';// Quitar 
+import 'package:flutter/material.dart'; // Quitar
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'widgets.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class BluetoothOffScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.pink.shade100,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -25,14 +25,22 @@ class BluetoothOffScreen extends StatelessWidget {
               size: 200.0,
               color: Colors.white54,
             ),
-            Text(
-              'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+              'Bluetooth is ${state != null ? state.toString().substring(15) : 'not available'}.',
               style: Theme.of(context)
                   .primaryTextTheme
                   .headlineMedium
                   ?.copyWith(color: Colors.white),
             ),
+            ),
+
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Color.fromARGB(255, 241, 135, 241),
+            ),
               onPressed: Platform.isAndroid
                   ? () => FlutterBluePlus.instance.turnOn()
                   : null,
@@ -45,102 +53,79 @@ class BluetoothOffScreen extends StatelessWidget {
   }
 }
 
-class FindDevicesScreen extends StatelessWidget {
+class FindDevicesScreen extends StatefulWidget {
   const FindDevicesScreen({Key? key}) : super(key: key);
+
+  @override
+  _FindDevicesScreenState createState() => _FindDevicesScreenState();
+}
+
+class _FindDevicesScreenState extends State<FindDevicesScreen> {
+  @override
+  void initState() {
+    super.initState();
+    startScan();
+  }
+
+  Future<void> startScan() async {
+    await FlutterBluePlus.instance.startScan(timeout: const Duration(seconds: 4));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find Devices'),
-        actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-	      backgroundColor: Colors.black,
-            ),
-            onPressed: Platform.isAndroid
-                ? () => FlutterBluePlus.instance.turnOff()
-                : null,
-            child: const Text('TURN OFF'),
-          ),
-        ],
+        title: Image.asset('Images/logopage.png',
+            fit: BoxFit.cover, height: 100, width: 130),
+        backgroundColor: Colors.white,
+        leading: const BackButton(
+          color: Colors.black,
+        ),
       ),
       body: RefreshIndicator(
-        onRefresh: () => FlutterBluePlus.instance
-            .startScan(timeout: const Duration(seconds: 4)),
+        onRefresh: () => FlutterBluePlus.instance.startScan(timeout: const Duration(seconds: 4)),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               StreamBuilder<List<BluetoothDevice>>(
-                stream: Stream.periodic(const Duration(seconds: 2))
-                    .asyncMap((_) => FlutterBluePlus.instance.connectedDevices),
+                stream: Stream.periodic(const Duration(seconds: 2)).asyncMap((_) => FlutterBluePlus.instance.connectedDevices),
                 initialData: const [],
                 builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map((d) => ListTile(
-                            title: Text(d.name),
-                            subtitle: Text(d.id.toString()),
-                            trailing: StreamBuilder<BluetoothDeviceState>(
-                              stream: d.state,
-                              initialData: BluetoothDeviceState.disconnected,
-                              builder: (c, snapshot) {
-                                if (snapshot.data ==
-                                    BluetoothDeviceState.connected) {
-                                  return ElevatedButton(
-                                    child: const Text('OPEN'),
-                                    onPressed: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DeviceScreen(device: d))),
-                                  );
-                                }
-                                return Text(snapshot.data.toString());
-                              },
-                            ),
-                          ))
-                      .toList(),
+                  children: snapshot.data!.map((d) => ListTile(
+                    title: Text(d.name),
+                    subtitle: Text(d.id.toString()),
+                    trailing: StreamBuilder<BluetoothDeviceState>(
+                      stream: d.state,
+                      initialData: BluetoothDeviceState.disconnected,
+                      builder: (c, snapshot) {
+                        if (snapshot.data == BluetoothDeviceState.connected) {
+                          return ElevatedButton(
+                            child: const Text('OPEN'),
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeviceScreen(device: d))),
+                          );
+                        }
+                        return Text(snapshot.data.toString());
+                      },
+                    ),
+                  )).toList(),
                 ),
               ),
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBluePlus.instance.scanResults,
                 initialData: const [],
                 builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map(
-                        (r) => ScanResultTile(
-                          result: r,
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            r.device.connect();
-                            return DeviceScreen(device: r.device);
-                          })),
-                        ),
-                      )
-                      .toList(),
+                  children: snapshot.data!.map((r) => ScanResultTile(
+                    result: r,
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      r.device.connect();
+                      return DeviceScreen(device: r.device);
+                    })),
+                  )).toList(),
                 ),
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButton: StreamBuilder<bool>(
-        stream: FlutterBluePlus.instance.isScanning,
-        initialData: false,
-        builder: (c, snapshot) {
-          if (snapshot.data!) {
-            return FloatingActionButton(
-              onPressed: () => FlutterBluePlus.instance.stopScan(),
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.stop),
-            );
-          } else {
-            return FloatingActionButton(
-                child: const Icon(Icons.search),
-                onPressed: () => FlutterBluePlus.instance
-                    .startScan(timeout: const Duration(seconds: 4)));
-          }
-        },
       ),
     );
   }
@@ -156,7 +141,6 @@ class DeviceScreen extends StatefulWidget {
 }
 
 class _DeviceScreenState extends State<DeviceScreen> {
-
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     return services
         .map(
@@ -185,122 +169,71 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final providerTemp = Provider.of<TempProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.device.name),
-        actions: <Widget>[
+        title: Image.asset('Images/logopage.png',
+            fit: BoxFit.cover, height: 100, width: 130),
+        backgroundColor: Colors.white,
+        leading: const BackButton(
+          color: Colors.black,
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
           StreamBuilder<BluetoothDeviceState>(
             stream: widget.device.state,
             initialData: BluetoothDeviceState.connecting,
             builder: (c, snapshot) {
-              VoidCallback? onPressed;
-              String text;
-              switch (snapshot.data) {
-                case BluetoothDeviceState.connected:
-                  onPressed = () => widget.device.disconnect();
-                  text = 'DISCONNECT';
-                  break;
-                case BluetoothDeviceState.disconnected:
-                  onPressed = () => widget.device.connect();
-                  text = 'CONNECT';
-                  break;
-                default:
-                  onPressed = null;
-                  text = snapshot.data.toString().substring(21).toUpperCase();
-                  break;
+              if (snapshot.data == BluetoothDeviceState.connected) {
+                widget.device.discoverServices();
               }
-              return TextButton(
-                  onPressed: onPressed,
-                  child: Text(
-                    text,
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .labelLarge
-                        ?.copyWith(color: Colors.white),
-                  ));
-            },
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            StreamBuilder<BluetoothDeviceState>(
-              stream: widget.device.state,
-              initialData: BluetoothDeviceState.connecting,
-              builder: (c, snapshot) => ListTile(
-                leading: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    snapshot.data == BluetoothDeviceState.connected
-                        ? const Icon(Icons.bluetooth_connected)
-                        : const Icon(Icons.bluetooth_disabled),
-                  ],
-                ),
-                title: Text(
-                    'Device is ${snapshot.data.toString().split('.')[1]}.'),
-                subtitle: Text('${widget.device.id}'),
-                trailing: StreamBuilder<bool>(
-                  stream: widget.device.isDiscoveringServices,
-                  initialData: false,
-                  builder: (c, snapshot) => IndexedStack(
-                    index: snapshot.data! ? 1 : 0,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.refresh),
-                        onPressed: () => widget.device.discoverServices(),
-                      ),
-                      const IconButton(
-                        icon: SizedBox(
-                          width: 18.0,
-                          height: 18.0,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.grey),
-                          ),
-                        ),
-                        onPressed: null,
-                      )
+              return ListTile(
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      snapshot.data == BluetoothDeviceState.connected
+                          ? const Icon(Icons.bluetooth_connected)
+                          : const Icon(Icons.bluetooth_disabled),
                     ],
                   ),
-                ),
-              ),
-            ),
-            StreamBuilder<List<BluetoothService>>(
-              stream: widget.device.services,
-              initialData: const [],
-              builder: (c, snapshot) {
-                return Column(
-                  children: _buildServiceTiles(snapshot.data!),
-                );
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(220, 222, 18, 164),
-                  foregroundColor: Colors.white),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const DataPage(),
-                ));
-              },
-              child: const Text('Home'),
-            ),
-          ],
-        ),
+                  title: Text(
+                      'Device is ${snapshot.data.toString().split('.')[1]}.'),
+                  subtitle: Text('${widget.device.id}'),
+                  trailing: SizedBox(
+                    width: 30,
+                    child: StreamBuilder<bool>(
+                      stream: widget.device.isDiscoveringServices,
+                      initialData: false,
+                      builder: (c, snapshot) => IndexedStack(
+                        index: snapshot.data! ? 1 : 0,
+                      ),
+                    ),
+                  ));
+            },
+          ),
+          StreamBuilder<List<BluetoothService>>(
+            stream: widget.device.services,
+            initialData: const [],
+            builder: (c, snapshot) {
+              return Column(
+                children: _buildServiceTiles(snapshot.data!),
+              );
+            },
+          ),
+          /*ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(220, 222, 18, 164),
+                foregroundColor: Colors.white),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => const DataPage(),
+              ));
+            },
+            child: const Text('Home'),
+          ),*/
+        ],
       ),
     );
-  }
-
-  Stream<int> rssiStream() async* {
-    var isConnected = true;
-    final subscription = widget.device.state.listen((state) {
-      isConnected = state == BluetoothDeviceState.connected;
-    });
-    while (isConnected) {
-      yield await widget.device.readRssi();
-      await Future.delayed(const Duration(seconds: 1));
-    }
-    subscription.cancel();
-    // Device disconnected, stopping RSSI stream
   }
 }

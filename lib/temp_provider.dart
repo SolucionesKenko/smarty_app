@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TempProvider extends ChangeNotifier {
-  String _temp = 'temperatura';
+  String _temp = 'S1';
   String get temp => _temp;
 
   set temp(String newTemp) {

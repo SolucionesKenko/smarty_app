@@ -22,8 +22,7 @@ class _HomeState extends State<Home> {
         title: Image.asset('Images/logopage.png',
             fit: BoxFit.cover,
             height: 100,
-            width:
-                130), //const Text('Kabsim App', style: TextStyle(color: Colors.black),),
+            width: 130),
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
@@ -33,7 +32,7 @@ class _HomeState extends State<Home> {
             ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const MySmartApp(),
+                builder: (BuildContext context) => const FindDevicesScreen (),
               ));
             },
           ),
