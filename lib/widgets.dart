@@ -5,9 +5,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
+import 'main.dart';
 import 'Providers/s1_provider.dart';
 import 'Providers/s2_provider.dart';
-import 'main.dart';
+import 'Providers/s3_provider.dart';
+import 'Providers/s4_provider.dart';
+import 'Providers/s5_provider.dart';
+import 'Providers/s6_provider.dart';
+import 'Providers/s7_provider.dart';
+import 'Providers/s8_provider.dart';
+import 'Providers/s9_provider.dart';
+import 'Providers/s10_provider.dart';
+import 'Providers/s11_provider.dart';
+import 'Providers/s12_provider.dart';
 
 
 final Map<String, String> characteristicNames = {
@@ -163,7 +173,7 @@ class ServiceTile extends StatelessWidget {
           children: <Widget>[
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,            
             ),
             ...characteristicTiles,
           ],
@@ -199,48 +209,67 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   Widget build(BuildContext context) {
     final providerS1 = Provider.of<S1Provider>(context);
     final providerS2 = Provider.of<S2Provider>(context);
-    return Column(children: <Widget>[
-      StreamBuilder<List<int>>(
-        stream: widget.characteristic.value,
-        initialData: widget.characteristic.lastValue,
-        builder: (c, snapshot) {
-          final value = snapshot.data;
-          String asciiString = value != null ? String.fromCharCodes(value) : '';
-          return const ListTile(
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-            ),
-          );
-        },
-      ),
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(220, 222, 18, 164),
-          foregroundColor: Colors.white,
+    final providerS3 = Provider.of<S3Provider>(context);
+    final providerS4 = Provider.of<S4Provider>(context);
+    final providerS5 = Provider.of<S5Provider>(context);
+    final providerS6 = Provider.of<S6Provider>(context);
+    final providerS7 = Provider.of<S7Provider>(context);
+    final providerS8 = Provider.of<S8Provider>(context);
+    final providerS9 = Provider.of<S9Provider>(context);
+    final providerS10 = Provider.of<S10Provider>(context);
+    final providerS11 = Provider.of<S11Provider>(context);
+    final providerS12 = Provider.of<S12Provider>(context);
+    return  SingleChildScrollView(
+      child: Column(children: <Widget>[
+        StreamBuilder<List<int>>(
+          stream: widget.characteristic.value,
+          initialData: widget.characteristic.lastValue,
+          builder: (c, snapshot) {
+            final value = snapshot.data;
+            String asciiString = value != null ? String.fromCharCodes(value) : '';
+            return const ListTile(
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            );
+          },
         ),
-        onPressed: () async {
-          final currentContext = context;
-
-          widget.characteristic.read();
-          List<int> readValues = await widget.characteristic.value.first;
-          allCharacteristicValues.add(readValues);
-          providerS1.s1 = String.fromCharCodes(readValues);
-          providerS2.s2 = String.fromCharCodes(readValues);
-          Navigator.of(currentContext).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  DataPage(data: allCharacteristicValues),
-            ),
-          );
-          /* // Dentro del widget SecondRoute
-onPressed: () {
-  Navigator.pop(context);
-} */
-        },
-        child: const Text('Enviar datos'),
-      ),
-    ]);
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(220, 222, 18, 164),
+            foregroundColor: Colors.white,
+          ),
+          onPressed: () async {
+            final currentContext = context;
+    
+            widget.characteristic.read();
+            List<int> readValues = await widget.characteristic.value.first;
+            allCharacteristicValues.add(readValues);
+            providerS1.s1 = String.fromCharCodes(readValues);
+            providerS2.s2 = String.fromCharCodes(readValues);
+            providerS3.s3 = String.fromCharCodes(readValues);
+            providerS4.s4 = String.fromCharCodes(readValues);
+            providerS5.s5 = String.fromCharCodes(readValues);
+            providerS6.s6 = String.fromCharCodes(readValues);
+            providerS7.s7 = String.fromCharCodes(readValues);
+            providerS8.s8 = String.fromCharCodes(readValues);
+            providerS9.s9 = String.fromCharCodes(readValues);
+            providerS10.s10 = String.fromCharCodes(readValues);
+            providerS11.s11 = String.fromCharCodes(readValues);
+            providerS12.s12 = String.fromCharCodes(readValues);
+            
+            Navigator.of(currentContext).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    DataPage(data: allCharacteristicValues),
+              ),
+            );
+          },
+          child: const Text('Enviar datos'),
+        ),
+      ]),
+    );
   }
 }
 

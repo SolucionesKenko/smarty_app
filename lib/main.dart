@@ -5,6 +5,16 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart' as FlutterBlue;
 import 'package:smarty_app/bluetooth.dart';
 import 'package:smarty_app/Providers/s1_provider.dart';
 import 'package:smarty_app/Providers/s2_provider.dart';
+import 'package:smarty_app/Providers/s3_provider.dart';
+import 'package:smarty_app/Providers/s4_provider.dart';
+import 'package:smarty_app/Providers/s5_provider.dart';
+import 'package:smarty_app/Providers/s6_provider.dart';
+import 'package:smarty_app/Providers/s7_provider.dart';
+import 'package:smarty_app/Providers/s8_provider.dart';
+import 'package:smarty_app/Providers/s9_provider.dart';
+import 'package:smarty_app/Providers/s10_provider.dart';
+import 'package:smarty_app/Providers/s11_provider.dart';
+import 'package:smarty_app/Providers/s12_provider.dart';
 import 'Pages/history.dart';
 import 'Pages/home.dart';
 import 'Pages/perfil.dart';
@@ -29,21 +39,51 @@ class _MySmartAppState extends State<MySmartApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => S2Provider(),
+      create: (BuildContext context) => S12Provider(),
       child: ChangeNotifierProvider(
-        create: (BuildContext context) => S1Provider(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: StreamBuilder<FlutterBlue.BluetoothState>(
-            stream: FlutterBlue.FlutterBluePlus.instance.state,
-            initialData: FlutterBlue.BluetoothState.unknown,
-            builder: (c, snapshot) {
-              final state = snapshot.data;
-              if (state == FlutterBlue.BluetoothState.on) {
-                return DataPage(data: allCharacteristicValues); // Pasa los datos aqu¨ª
-              }
-              return BluetoothOffScreen(state: state);
-            },
+        create: (BuildContext context) => S11Provider(),
+        child: ChangeNotifierProvider(
+          create: (BuildContext context) => S10Provider(),
+          child: ChangeNotifierProvider(
+            create: (BuildContext context) => S9Provider(),
+            child: ChangeNotifierProvider(
+              create: (BuildContext context) => S8Provider(),
+              child: ChangeNotifierProvider(
+                create: (BuildContext context) => S7Provider(),
+                child: ChangeNotifierProvider(
+                  create: (BuildContext context) => S6Provider(),
+                  child: ChangeNotifierProvider(
+                    create: (BuildContext context) => S5Provider(),
+                    child: ChangeNotifierProvider(
+                      create: (BuildContext context) => S4Provider(),
+                      child: ChangeNotifierProvider(
+                        create: (BuildContext context) => S3Provider(),
+                        child: ChangeNotifierProvider(
+                          create: (BuildContext context) => S2Provider(),
+                          child: ChangeNotifierProvider(
+                            create: (BuildContext context) => S1Provider(),
+                            child: MaterialApp(
+                              debugShowCheckedModeBanner: false,
+                              home: StreamBuilder<FlutterBlue.BluetoothState>(
+                                stream: FlutterBlue.FlutterBluePlus.instance.state,
+                                initialData: FlutterBlue.BluetoothState.unknown,
+                                builder: (c, snapshot) {
+                                  final state = snapshot.data;
+                                  if (state == FlutterBlue.BluetoothState.on) {
+                                    return DataPage(data: allCharacteristicValues); // Pasa los datos aqu¨ª
+                                  }
+                                  return BluetoothOffScreen(state: state);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

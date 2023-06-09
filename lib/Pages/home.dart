@@ -3,6 +3,16 @@ import 'package:smarty_app/bluetooth.dart';
 import 'package:provider/provider.dart';
 import 'package:smarty_app/Providers/s1_provider.dart';
 import 'package:smarty_app/Providers/s2_provider.dart';
+import 'package:smarty_app/Providers/s3_provider.dart';
+import 'package:smarty_app/Providers/s4_provider.dart';
+import 'package:smarty_app/Providers/s5_provider.dart';
+import 'package:smarty_app/Providers/s6_provider.dart';
+import 'package:smarty_app/Providers/s7_provider.dart';
+import 'package:smarty_app/Providers/s8_provider.dart';
+import 'package:smarty_app/Providers/s9_provider.dart';
+import 'package:smarty_app/Providers/s10_provider.dart';
+import 'package:smarty_app/Providers/s11_provider.dart';
+import 'package:smarty_app/Providers/s12_provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -53,24 +63,22 @@ class LabelsTem extends StatefulWidget {
 class _LabelsTemState extends State<LabelsTem> {
   double _value = 50.0; // Valor inicial
 
-Color _getColor(double value) {
-  if (value <= 33) {
-    // Rango del 1 al 33: Verde a Amarillo
-    final red = (255 * value / 33).round();
-    final green = 255;
-    return Color.fromARGB(255, red, green, 0);
-  } else if (value <= 67) {
-    // Rango del 34 al 66: Amarillo a Rojo
-    final red = 255;
-    final green = (255 * (100 - value) / 33).round();
-    return Color.fromARGB(255, red, green, 0);
-  } else {
-    // Rango del 67 al 100: Rojo
-    return Colors.red;
+  Color _getColor(double value) {
+    if (value <= 33) {
+      // Rango del 1 al 33: Verde a Amarillo
+      final red = (255 * value / 33).round();
+      final green = 255;
+      return Color.fromARGB(255, red, green, 0);
+    } else if (value <= 67) {
+      // Rango del 34 al 66: Amarillo a Rojo
+      final red = 255;
+      final green = (255 * (100 - value) / 33).round();
+      return Color.fromARGB(255, red, green, 0);
+    } else {
+      // Rango del 67 al 100: Rojo
+      return Colors.red;
+    }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +110,13 @@ Color _getColor(double value) {
                       Expanded(
                         child: Consumer<S1Provider>(
                           builder: (context, s1, _) {
-                            double value = double.tryParse(s1.s1) ?? 0.0; // Obtener el valor del Consumer
+                            double value = double.tryParse(s1.s1) ??
+                                0.0; // Obtener el valor del Consumer
                             Color circleColor = _getColor(
                                 value); // Obtener el color seg¨²n el valor
 
                             return Container(
-                              margin: EdgeInsets.only(right: 30),
+                              margin: const EdgeInsets.only(right: 30),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: circleColor,
@@ -120,12 +129,13 @@ Color _getColor(double value) {
                       Expanded(
                         child: Consumer<S2Provider>(
                           builder: (context, s2, _) {
-                            double value =  double.tryParse(s2.s2) ?? 0.0;// Obtener el valor del Consumer
+                            double value = double.tryParse(s2.s2) ??
+                                0.0; // Obtener el valor del Consumer
                             Color circleColor = _getColor(
                                 value); // Obtener el color seg¨²n el valor
 
                             return Container(
-                              margin: EdgeInsets.only(left: 25),
+                              margin: const EdgeInsets.only(left: 25),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: circleColor,
@@ -143,34 +153,64 @@ Color _getColor(double value) {
                 Container(
                   height: 140,
                   width: 350,
-                  color: null,
-                  child: const Row(
+                  //color: Colors.red.shade400,
+                  child: Row(
                     children: [
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text("S7"),
-                        ),
+                      Expanded(
+                        //S7
+                        child: Consumer<S7Provider>(builder: (context, s7, _) {
+                          double value = double.tryParse(s7.s7) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s7.s7)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S5"),
-                        ),
+                      Expanded(
+                        //S5
+                        child: Consumer<S5Provider>(builder: (context, s5, _) {
+                          double value = double.tryParse(s5.s5) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s5.s5)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text("S3"),
-                        ),
+                      Expanded(
+                        //S3
+                        child: Consumer<S3Provider>(builder: (context, s3, _) {
+                          double value = double.tryParse(s3.s3) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s3.s3)),
+                          );
+                        }),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 44,
                         height: 70,
                         child: Align(
@@ -178,81 +218,159 @@ Color _getColor(double value) {
                           child: Text(""),
                         ),
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text("S4"),
-                        ),
+                      Expanded(
+                        //S4
+                        child: Consumer<S4Provider>(builder: (context, s4, _) {
+                          double value = double.tryParse(s4.s4) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s4.s4)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S6"),
-                        ),
+                      Expanded(
+                        //S6
+                        child: Consumer<S6Provider>(builder: (context, s6, _) {
+                          double value = double.tryParse(s6.s6) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s6.s6)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 70,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text("S8"),
-                        ),
+                      Expanded(
+                        //S8
+                        child: Consumer<S8Provider>(builder: (context, s8, _) {
+                          double value = double.tryParse(s8.s8) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s8.s8)),
+                          );
+                        }),
                       ),
                     ],
                   ),
                 ),
                 //Container 4
                 Container(
-                  height: 80,
+                  height: 50,
                   width: 350,
                   color: null,
-                  child: const Row(
+                  child: Row(
                     children: [
-                      SizedBox(
-                        width: 175,
-                        height: 80,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S9"),
-                        ),
+                      Expanded(
+                        //S9
+                        child: Consumer<S9Provider>(builder: (context, s9, _) {
+                          double value = double.tryParse(s9.s9) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s9.s9)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 175,
-                        height: 80,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S10"),
-                        ),
+                      Expanded(
+                        //S10
+                        child:
+                            Consumer<S10Provider>(builder: (context, s10, _) {
+                          double value = double.tryParse(s10.s10) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s10.s10)),
+                          );
+                        }),
                       ),
                     ],
                   ),
                 ),
                 //Container 5
                 Container(
-                  height: 125,
-                  width: 300,
-                  color: null,
-                  child: const Row(
+                  height: 60,
+                  width: 250,
+                ),
+                //Container 6
+                Container(
+                  height: 50,
+                  width: 250,
+                  //color: Colors.red,
+                  child: Row(
                     children: [
-                      SizedBox(
-                        width: 150,
-                        height: 80,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S11"),
-                        ),
+                      Expanded(
+                        //S11
+                        child:
+                            Consumer<S11Provider>(builder: (context, s11, _) {
+                          double value = double.tryParse(s11.s11) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s11.s11)),
+                          );
+                        }),
                       ),
-                      SizedBox(
-                        width: 150,
-                        height: 80,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("S12"),
-                        ),
+                      Expanded(
+                        //S12
+                        child:
+                            Consumer<S12Provider>(builder: (context, s12, _) {
+                          double value = double.tryParse(s12.s12) ??
+                              0.0; // Obtener el valor del Consumer
+                          Color circleColor = _getColor(
+                              value); // Obtener el color seg¨²n el valor
+
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: circleColor,
+                            ),
+                            child: Center(child: Text(s12.s12)),
+                          );
+                        }),
                       ),
                     ],
                   ),
