@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smarty_app/bluetooth.dart';
 import 'package:provider/provider.dart';
-import 'package:smarty_app/temp_provider.dart';
-import 'package:smarty_app/hum_provider.dart';
-
+import 'package:smarty_app/Providers/s1_provider.dart';
+import 'package:smarty_app/Providers/s2_provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,11 +17,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Image.asset('Images/logopage.png',
-            fit: BoxFit.cover,
-            height: 100,
-            width: 130),
+            fit: BoxFit.cover, height: 100, width: 130),
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
@@ -32,7 +30,7 @@ class _HomeState extends State<Home> {
             ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => const FindDevicesScreen (),
+                builder: (BuildContext context) => const FindDevicesScreen(),
               ));
             },
           ),
@@ -53,6 +51,27 @@ class LabelsTem extends StatefulWidget {
 }
 
 class _LabelsTemState extends State<LabelsTem> {
+  double _value = 50.0; // Valor inicial
+
+Color _getColor(double value) {
+  if (value <= 33) {
+    // Rango del 1 al 33: Verde a Amarillo
+    final red = (255 * value / 33).round();
+    final green = 255;
+    return Color.fromARGB(255, red, green, 0);
+  } else if (value <= 67) {
+    // Rango del 34 al 66: Amarillo a Rojo
+    final red = 255;
+    final green = (255 * (100 - value) / 33).round();
+    return Color.fromARGB(255, red, green, 0);
+  } else {
+    // Rango del 67 al 100: Rojo
+    return Colors.red;
+  }
+}
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,40 +95,50 @@ class _LabelsTemState extends State<LabelsTem> {
                 ),
                 //Container 2
                 Container(
+                  width: 170,
                   height: 45,
-                  width: 140,
-                  color: null,
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: 115,
-                        child: Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.center,
-                              child: Consumer<TempProvider>(
-                                  builder: (context, temp, _) =>
-                                      Text(temp.temp)),
-                            ),
-                          ],
+                      Expanded(
+                        child: Consumer<S1Provider>(
+                          builder: (context, s1, _) {
+                            double value = double.tryParse(s1.s1) ?? 0.0; // Obtener el valor del Consumer
+                            Color circleColor = _getColor(
+                                value); // Obtener el color seg¨²n el valor
+
+                            return Container(
+                              margin: EdgeInsets.only(right: 30),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: circleColor,
+                              ),
+                              child: Center(child: Text(s1.s1)),
+                            );
+                          },
                         ),
                       ),
-                      SizedBox(
-                        width: 25,
-                        child: Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.center,
-                              child: Consumer<HumProvider>(
-                                  builder: (context, hum, _) =>
-                                      Text(hum.hum)),
-                            ),
-                          ],
+                      Expanded(
+                        child: Consumer<S2Provider>(
+                          builder: (context, s2, _) {
+                            double value =  double.tryParse(s2.s2) ?? 0.0;// Obtener el valor del Consumer
+                            Color circleColor = _getColor(
+                                value); // Obtener el color seg¨²n el valor
+
+                            return Container(
+                              margin: EdgeInsets.only(left: 25),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: circleColor,
+                              ),
+                              child: Center(child: Text(s2.s2)),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
+
                 //Container 3
                 Container(
                   height: 140,
@@ -228,6 +257,17 @@ class _LabelsTemState extends State<LabelsTem> {
                     ],
                   ),
                 ),
+                //Container 6
+                Expanded(
+                    child: Column(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.refresh, color: Colors.pink.shade200),
+                      onPressed: () {},
+                    ),
+                    const Text('Refresh'),
+                  ],
+                )),
               ],
             ),
           ),

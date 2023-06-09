@@ -5,14 +5,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
-import 'temp_provider.dart';
-import 'hum_provider.dart';
+import 'Providers/s1_provider.dart';
+import 'Providers/s2_provider.dart';
 import 'main.dart';
 
 
 final Map<String, String> characteristicNames = {
-  'beb5483e-36e1-4688-b7f5-ea07361b26a8': 'Temperature',
-  '8bdf0a1a-a48e-4dc3-8bab-ad0c1f7ed218': 'Humidity',
+  'beb5483e-36e1-4688-b7f5-ea07361b26a8': 'S1',
+  '8bdf0a1a-a48e-4dc3-8bab-ad0c1f7ed218': 'S2',
+  '411fcc1c-e7a5-4a61-82fe-0004993dd1f4': 'S3',
+  'c608f523-aa19-40d1-8359-ad43409c34d7': 'S4',
+  '52294b4d-d66e-4d68-9782-1e5bb8f7ba14': 'S5',
+  '7533653f-6f0e-41fa-8fa6-9892a1904db1': 'S6',
+  '607a2edc-007d-4d51-a3a6-58fad0db3c37': 'S7',
+  'f663c0e7-d78d-466f-9b0c-408e3cc4c3d3': 'S8',
+  '778a30f8-943b-4375-b261-fb264772063c': 'S9',
+  'a8f2dbc3-c562-42d9-a094-33e4cca73118': 'S10',
+  '3c21b038-85a3-4c47-aa78-446f301dd61c': 'S11',
+  '1b0724f2-156b-41a6-8bb6-22be491731fc': 'S12',
   // Add more characteristic UUIDs here
 };
 
@@ -187,8 +197,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   List<List<int>> allCharacteristicValues = [];
   @override
   Widget build(BuildContext context) {
-    final providerTemp = Provider.of<TempProvider>(context);
-    final providerHum = Provider.of<HumProvider>(context);
+    final providerS1 = Provider.of<S1Provider>(context);
+    final providerS2 = Provider.of<S2Provider>(context);
     return Column(children: <Widget>[
       StreamBuilder<List<int>>(
         stream: widget.characteristic.value,
@@ -215,14 +225,18 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
           widget.characteristic.read();
           List<int> readValues = await widget.characteristic.value.first;
           allCharacteristicValues.add(readValues);
-          providerTemp.temp = String.fromCharCodes(readValues);
-          providerHum.hum = String.fromCharCodes(readValues);
+          providerS1.s1 = String.fromCharCodes(readValues);
+          providerS2.s2 = String.fromCharCodes(readValues);
           Navigator.of(currentContext).push(
             MaterialPageRoute(
               builder: (BuildContext context) =>
                   DataPage(data: allCharacteristicValues),
             ),
           );
+          /* // Dentro del widget SecondRoute
+onPressed: () {
+  Navigator.pop(context);
+} */
         },
         child: const Text('Enviar datos'),
       ),

@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as FlutterBlue;
 import 'package:smarty_app/bluetooth.dart';
-import 'package:smarty_app/temp_provider.dart';
-import 'package:smarty_app/hum_provider.dart';
+import 'package:smarty_app/Providers/s1_provider.dart';
+import 'package:smarty_app/Providers/s2_provider.dart';
 import 'Pages/history.dart';
 import 'Pages/home.dart';
 import 'Pages/perfil.dart';
@@ -29,9 +29,9 @@ class _MySmartAppState extends State<MySmartApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => HumProvider(),
+      create: (BuildContext context) => S2Provider(),
       child: ChangeNotifierProvider(
-        create: (BuildContext context) => TempProvider(),
+        create: (BuildContext context) => S1Provider(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: StreamBuilder<FlutterBlue.BluetoothState>(

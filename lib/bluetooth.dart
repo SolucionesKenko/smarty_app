@@ -4,7 +4,7 @@ import 'package:flutter/material.dart'; // Quitar
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:smarty_app/temp_provider.dart';
+import 'package:smarty_app/Providers/s1_provider.dart';
 
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
@@ -168,7 +168,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final providerTemp = Provider.of<TempProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('Images/logopage.png',
