@@ -16,16 +16,16 @@ import 'package:smarty_app/Providers/s10_provider.dart';
 import 'package:smarty_app/Providers/s11_provider.dart';
 import 'package:smarty_app/Providers/s12_provider.dart';
 import 'Pages/history.dart';
-import 'Pages/home.dart';
-import 'Pages/perfil.dart';
-import 'Pages/settings.dart';
+import 'package:smarty_app/Pages/home.dart';
+import 'package:smarty_app/Pages/perfil.dart';
+import 'package:smarty_app/Pages/settings.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MySmartApp());
 }
 
-// Inicializaci¨®n de la APP
+// Inicializaciï¿½ï¿½n de la APP
 class MySmartApp extends StatefulWidget {
   const MySmartApp({Key? key}) : super(key: key);
 
@@ -34,7 +34,7 @@ class MySmartApp extends StatefulWidget {
 }
 
 class _MySmartAppState extends State<MySmartApp> {
-  List<List<int>> allCharacteristicValues = []; // Define la lista aqu¨ª
+  List<List<int>> allCharacteristicValues = []; // Define la lista aquï¿½ï¿½
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _MySmartAppState extends State<MySmartApp> {
                                 builder: (c, snapshot) {
                                   final state = snapshot.data;
                                   if (state == FlutterBlue.BluetoothState.on) {
-                                    return DataPage(data: allCharacteristicValues); // Pasa los datos aqu¨ª
+                                    return DataPage(data: allCharacteristicValues); // Pasa los datos aquï¿½ï¿½
                                   }
                                   return BluetoothOffScreen(state: state);
                                 },
@@ -116,7 +116,7 @@ class _DataPageState extends State<DataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions[currentIndex],
-      //Botones de Navegaci¨®n
+      //Botones de Navegaciï¿½ï¿½n
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
