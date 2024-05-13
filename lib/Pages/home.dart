@@ -98,12 +98,12 @@ class _LabelsTemState extends State<LabelsTem> {
               children: [
                 //Container 1
                 Container(
-                  height: 75,
+                  height: 170,
                   color: null,
                 ),
                 //Container 2
                 Container(
-                  width: 170,
+                  width: 210,
                   height: 45,
                   child: Row(
                     children: [
@@ -113,7 +113,7 @@ class _LabelsTemState extends State<LabelsTem> {
                             double value = double.tryParse(s1.s1) ??
                                 0.0; // Obtener el valor del Consumer
                             Color circleColor = _getColor(
-                                value); // Obtener el color seg¨²n el valor
+                                value); // Obtener el color segï¿½ï¿½n el valor
 
                             return Container(
                               margin: const EdgeInsets.only(right: 30),
@@ -132,7 +132,7 @@ class _LabelsTemState extends State<LabelsTem> {
                             double value = double.tryParse(s2.s2) ??
                                 0.0; // Obtener el valor del Consumer
                             Color circleColor = _getColor(
-                                value); // Obtener el color seg¨²n el valor
+                                value); // Obtener el color segï¿½ï¿½n el valor
 
                             return Container(
                               margin: const EdgeInsets.only(left: 25),
@@ -148,11 +148,10 @@ class _LabelsTemState extends State<LabelsTem> {
                     ],
                   ),
                 ),
-
                 //Container 3
                 Container(
-                  height: 140,
-                  width: 350,
+                  height: 180,
+                  width: 370,
                   //color: Colors.red.shade400,
                   child: Row(
                     children: [
@@ -162,7 +161,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s7.s7) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -180,7 +179,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s5.s5) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -198,7 +197,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s3.s3) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -224,7 +223,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s4.s4) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -242,7 +241,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s6.s6) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -260,7 +259,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s8.s8) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -278,7 +277,7 @@ class _LabelsTemState extends State<LabelsTem> {
                 //Container 4
                 Container(
                   height: 50,
-                  width: 350,
+                  width: 450,
                   color: null,
                   child: Row(
                     children: [
@@ -288,7 +287,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s9.s9) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -307,7 +306,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s10.s10) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -324,13 +323,13 @@ class _LabelsTemState extends State<LabelsTem> {
                 ),
                 //Container 5
                 Container(
-                  height: 60,
+                  height: 80,
                   width: 250,
                 ),
                 //Container 6
                 Container(
                   height: 50,
-                  width: 250,
+                  width: 300,
                   //color: Colors.red,
                   child: Row(
                     children: [
@@ -341,7 +340,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s11.s11) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -360,7 +359,7 @@ class _LabelsTemState extends State<LabelsTem> {
                           double value = double.tryParse(s12.s12) ??
                               0.0; // Obtener el valor del Consumer
                           Color circleColor = _getColor(
-                              value); // Obtener el color seg¨²n el valor
+                              value); // Obtener el color segï¿½ï¿½n el valor
 
                           return Container(
                             margin: const EdgeInsets.only(right: 10),
@@ -376,16 +375,15 @@ class _LabelsTemState extends State<LabelsTem> {
                   ),
                 ),
                 //Container 6
-                Expanded(
-                    child: Column(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.refresh, color: Colors.pink.shade200),
-                      onPressed: () {},
-                    ),
-                    const Text('Refresh'),
-                  ],
-                )),
+                Container(
+                  height: 100,
+                  width: 100,
+                ),
+                IconButton(
+                  icon: Icon(Icons.refresh, color: Colors.pink.shade200),
+                  onPressed: () {},
+                ),
+                const Text('Refresh'),
               ],
             ),
           ),

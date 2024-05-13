@@ -25,7 +25,7 @@ void main() {
   runApp(const MySmartApp());
 }
 
-// Inicializaci��n de la APP
+// Inicializacion de la APP
 class MySmartApp extends StatefulWidget {
   const MySmartApp({Key? key}) : super(key: key);
 
